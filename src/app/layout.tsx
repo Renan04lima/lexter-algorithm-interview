@@ -10,7 +10,7 @@ export const fontSans = FontSans({
 
 
 export const metadata: Metadata = {
-  title: 'Lexter.ai',
+  title: 'Challenge',
   description: 'Interview challenge for Lexter.ai',
 }
 
