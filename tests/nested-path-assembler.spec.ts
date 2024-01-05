@@ -4,6 +4,7 @@ type Output = {
     entryId: number
     fullPath: string
     children: Output[]
+    currentPath?: string
 }
 class NestedPathsAssembler {
     execute(inputList: Input[]): any[] {
@@ -36,6 +37,7 @@ class NestedPathsAssembler {
 
     private addChildren(output: Output[]) {
         for (let i = 0; i < output.length; i++) {
+            output[i].currentPath = output[i].fullPath.split('/').pop()
             for (let j = i + 1; j < output.length; j++) {
                 if (output[i].fullPath.split('/').includes(output[j].fullPath.split('/')[0])) {
                     const copiedObject: Output = JSON.parse(JSON.stringify(output[j]));
@@ -93,7 +95,7 @@ describe('NestedPathsAssembler', () => {
         ]
         const output = sut.execute(input)
 
-        expect(output).toStrictEqual([
+        expect(output).toMatchObject([
             {
                 entryId: 1,
                 fullPath: "root1",
@@ -113,5 +115,37 @@ describe('NestedPathsAssembler', () => {
             }
         ])
     })
-    test.todo('The currentPath key is the current path value. In other words, for the fullPath entry roo/path, your currentPath is path')
+
+    test('The currentPath key is the current path value. In other words, for the fullPath entry roo/path, your currentPath is path', () => {
+        const sut = new NestedPathsAssembler()
+        const input = [
+            { entryId: "1", path: ["root1"] },
+            { entryId: "2", path: ["root1", "path2"] },
+            { entryId: "3", path: ["root1", "path2", "path2"] },
+        ]
+        const output = sut.execute(input)
+
+        expect(output).toStrictEqual([
+            {
+                entryId: 1,
+                fullPath: "root1",
+                currentPath: "root1",
+                children: [
+                    {
+                        entryId: 2,
+                        fullPath: "root1/path2",
+                        currentPath: "path2",
+                        children: [
+                            {
+                                entryId: 3,
+                                currentPath: "path2",
+                                fullPath: "root1/path2/path2",
+                                children: [],
+                            },
+                        ],
+                    },
+                ],
+            }
+        ])
+    })
 })
