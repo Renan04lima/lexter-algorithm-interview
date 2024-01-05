@@ -4,19 +4,17 @@ type Output = {
     entryId: number
     fullPath: string
     children: Output[]
-    currentPath?: string
+    currentPath: string
 }
-class NestedPathsAssembler {
+export class NestedPathsAssembler {
     execute(inputList: Input[]): any[] {
         const output: Output[] = inputList
             .map(i => {
-                const [root, ...paths] = i.path;
-                const fullPath = `${root}${paths.length > 0 ? `/${paths.sort().join('/')}` : ''}`;
-
                 return {
                     entryId: Number(i.entryId),
-                    fullPath,
-                    children: [],
+                    fullPath: i.path.join('/'),
+                    currentPath: '',
+                    children: []
                 }
             })
             .sort((a, b) => {
@@ -35,11 +33,16 @@ class NestedPathsAssembler {
         return output
     }
 
+    private isChildren(parent: Output, potentialChild: Output): boolean {
+        return potentialChild.fullPath.startsWith(parent.fullPath + '/');
+    }
+
     private addChildren(output: Output[]) {
         for (let i = 0; i < output.length; i++) {
-            output[i].currentPath = output[i].fullPath.split('/').pop()
+            output[i].currentPath = output[i].fullPath.split('/').pop() || '';
             for (let j = i + 1; j < output.length; j++) {
-                if (output[i].fullPath.split('/').includes(output[j].fullPath.split('/')[0])) {
+                const isChildren = this.isChildren(output[i], output[j]);
+                if (isChildren) {
                     const copiedObject: Output = JSON.parse(JSON.stringify(output[j]));
 
                     output[i].children.push(copiedObject);
@@ -80,7 +83,7 @@ describe('NestedPathsAssembler', () => {
         const output = sut.execute(input)
 
         expect(output.map(o => o.fullPath)).toEqual([
-            "root1/path2/path3",
+            "root1/path3/path2",
             "root2/path1",
             "root3/path2",
         ])
@@ -92,6 +95,7 @@ describe('NestedPathsAssembler', () => {
             { entryId: "1", path: ["root1"] },
             { entryId: "2", path: ["root1", "path2"] },
             { entryId: "3", path: ["root1", "path2", "path2"] },
+            { entryId: "4", path: ["root1", "path3", "path2"] },
         ]
         const output = sut.execute(input)
 
@@ -110,6 +114,11 @@ describe('NestedPathsAssembler', () => {
                                 children: [],
                             },
                         ],
+                    },
+                    {
+                        entryId: 4,
+                        fullPath: "root1/path3/path2",
+                        children: [],
                     },
                 ],
             }
