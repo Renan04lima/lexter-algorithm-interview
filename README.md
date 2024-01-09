@@ -48,8 +48,7 @@ type Output = {
 }
 ```
 
-Para isso foi feito um site usando Next.js e tailwind.css:
-https://lexter-algorithm-interview-a1xgozsd5-renan04lima.vercel.app/
+Para isso foi feito um [site](https://lexter-algorithm-interview-theta.vercel.app/) usando Next.js e tailwind.css:
 
 ![Preview](docs/preview.png)
 
@@ -60,6 +59,10 @@ https://lexter-algorithm-interview-a1xgozsd5-renan04lima.vercel.app/
 
 <!-- GETTING STARTED -->
 > ## Rodar Projeto
+
+Acesse o site https://lexter-algorithm-interview-theta.vercel.app/
+
+OU
 
 Para rodar o site localmente, segue os seguintes comandos:
 
@@ -133,20 +136,20 @@ npm run test
 #### Status 400
 ```json
 {
-	"message": "Missing root path: root1"
+  "message": "Missing root path: root1"
 }
 ```
 
 ```json
 {
-	"message": "Invalid JSON"
+  "message": "Invalid JSON"
 }
 ```
 
 #### Status 500
 ```json
 {
-	"message": "Internal server error"
+  "message": "Internal server error"
 }
 ```
 
