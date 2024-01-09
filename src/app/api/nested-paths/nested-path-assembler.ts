@@ -1,5 +1,6 @@
 import { Input } from "@/types/input"
 import { Output } from "@/types/output"
+import { MissingRootPathError } from "./errors"
 
 export class NestedPathsAssembler {
     execute(inputList: Input[]): Output[] {
@@ -20,7 +21,6 @@ export class NestedPathsAssembler {
                 } else {
                     return 0
                 }
-
             })
 
         this.addChildren(output)
@@ -29,7 +29,7 @@ export class NestedPathsAssembler {
             const rootPath = item.fullPath.split('/')[0];
 
             if (!output.some(otherItem => otherItem.fullPath === rootPath)) {
-                throw new Error(`Missing root path: ${rootPath}`);
+                throw new MissingRootPathError(rootPath);
             }
         });
 
