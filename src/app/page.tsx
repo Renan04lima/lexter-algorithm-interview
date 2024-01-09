@@ -58,7 +58,7 @@ export default function Home() {
           <GithubButton />
         </div>
       </div>
-      <main className="flex-1 flex p-6 gap-6">
+      <main className="flex-1 flex flex-col p-6 gap-6 md:flex-row md:items-stretch">
         <div className="flex flex-col flex-1 gap-4">
           <p className="text-sm text-muted-foreground">
             Coloque o input e clique em Executar para gerar o output.
@@ -79,7 +79,7 @@ export default function Home() {
           </div>
         </div>
 
-        <aside className="w-80 flex items-center">
+        <aside className="w-full md:w-80 flex items-center mt-4 md:mt-0">
           <Button disabled={loading} type="submit" className="w-full" onClick={handleExecute}>
             Executar
             <Wand2 className="h-4 w-4 ml-2" />
