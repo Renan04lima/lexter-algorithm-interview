@@ -1,8 +1,35 @@
-import { GithubButton } from './../components/github-button';
-import { Wand2 } from "lucide-react"
+'use client'
+
+import { useState } from 'react';
 import { Textarea, Separator, Button } from "@/components/ui";
+import { GithubButton } from '@/components/github-button';
+import { Wand2 } from "lucide-react"
+import { inputList } from '@/data/input-default';
 
 export default function Home() {
+  const [input, setInput] = useState<string>(JSON.stringify(inputList, null, 2))
+  const [output, setOutput] = useState<string>()
+  const [loading, setLoading] = useState<boolean>(false)
+
+  async function handleExecute() {
+    setLoading(true)
+    try {
+      const response = await fetch('/api/nested-paths', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: input
+      })
+      const { output: outputResponse } = await response.json()
+      setOutput(JSON.stringify(outputResponse, null, 2))
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       <div className="px-6 py-3 flex items-center justify-between border-b">
@@ -25,18 +52,21 @@ export default function Home() {
             <Textarea
               className="resize-none leading-relaxed p-4"
               placeholder="Input"
+              value={input}
+              onChange={(event) => setInput(event.target.value)}
             />
             <Textarea
               className="resize-none leading-relaxed p-4"
               placeholder="Output"
               readOnly
+              value={output}
             />
           </div>
         </div>
 
         <aside className="w-80 flex items-center">
-          <Button disabled={false} type="submit" className="w-full">
-            Execute
+          <Button disabled={loading} type="submit" className="w-full" onClick={handleExecute}>
+            Executar
             <Wand2 className="h-4 w-4 ml-2" />
           </Button>
         </aside>
