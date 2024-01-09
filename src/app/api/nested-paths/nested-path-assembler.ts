@@ -13,15 +13,7 @@ export class NestedPathsAssembler {
                     children: []
                 }
             })
-            .sort((a, b) => {
-                if (a.entryId > b.entryId) {
-                    return 1
-                } else if (a.entryId < b.entryId) {
-                    return -1
-                } else {
-                    return 0
-                }
-            })
+            .sort((a, b) => a.entryId - b.entryId)
 
         this.addChildren(output)
 

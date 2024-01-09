@@ -5,6 +5,7 @@ import { MissingRootPathError } from "./errors";
 export async function POST(req: Request) {
     try {
         const body = await req.json()
+
         const np = new NestedPathsAssembler()
         const output = np.execute(body)
 
@@ -12,7 +13,10 @@ export async function POST(req: Request) {
     } catch (err) {
         if (err instanceof MissingRootPathError) {
             return NextResponse.json({ message: err.message }, { status: 400 })
+        } else if (err instanceof SyntaxError) {
+            return NextResponse.json({ message: 'Invalid JSON' }, { status: 400 })
         }
+
         return NextResponse.json({ message: 'Internal server error' }, { status: 500 })
     }
 }

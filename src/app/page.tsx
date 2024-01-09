@@ -5,15 +5,30 @@ import { Textarea, Separator, Button } from "@/components/ui";
 import { GithubButton } from '@/components/github-button';
 import { Wand2 } from "lucide-react"
 import { inputList } from '@/data/input-default';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Home() {
   const [input, setInput] = useState<string>(JSON.stringify(inputList, null, 2))
   const [output, setOutput] = useState<string>()
   const [loading, setLoading] = useState<boolean>(false)
 
+  function isValidJson(json: string) {
+    try {
+      JSON.parse(json)
+      return true
+    } catch (error) {
+      return false
+    }
+  }
+
   async function handleExecute() {
     setLoading(true)
     try {
+      if (!isValidJson(input)) {
+        throw new Error('Invalid JSON')
+      }
       const response = await fetch('/api/nested-paths', {
         method: 'POST',
         headers: {
@@ -24,7 +39,7 @@ export default function Home() {
       const { output: outputResponse } = await response.json()
       setOutput(JSON.stringify(outputResponse, null, 2))
     } catch (error) {
-      console.error(error)
+      toast.error((error as Error)?.message ?? 'Erro interno')
     } finally {
       setLoading(false)
     }
@@ -71,6 +86,7 @@ export default function Home() {
           </Button>
         </aside>
       </main>
+      <ToastContainer />
     </div>
   )
 }
