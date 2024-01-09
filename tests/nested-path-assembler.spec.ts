@@ -18,16 +18,16 @@ describe('NestedPathsAssembler', () => {
     test('The Output fullPath key is a string with all path elements separated by /', () => {
         const sut = new NestedPathsAssembler()
         const input = [
-            { entryId: "3", path: ["root3", "path2"] },
-            { entryId: "1", path: ["root1", "path3", "path2"] },
-            { entryId: "2", path: ["root2", "path1"] },
+            { entryId: "1", path: ["root1"] },
+            { entryId: "3", path: ["root1", "path2"] },
+            { entryId: "2", path: ["root1", "path3", "path2"] },
+            { entryId: "4", path: ["root2"] },
         ]
         const output = sut.execute(input)
 
         expect(output.map(o => o.fullPath)).toEqual([
-            "root1/path3/path2",
-            "root2/path1",
-            "root3/path2",
+            "root1",
+            "root2",
         ])
     })
 
@@ -98,5 +98,17 @@ describe('NestedPathsAssembler', () => {
                 ],
             }
         ])
+    })
+
+    test('It should throw an error if missing a parent path', () => {
+        const input = [
+            { entryId: "1", path: ["root2"] },
+            { entryId: "2", path: ["root1", "path2"] },
+            { entryId: "3", path: ["root1", "path2", "path2"] },
+        ]
+
+        const sut = new NestedPathsAssembler()
+
+        expect(() => sut.execute(input)).toThrow(new Error('Missing root path: root1'))
     })
 })
