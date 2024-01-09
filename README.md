@@ -1,36 +1,165 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div id="top"></div>
 
-## Getting Started
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
 
-First, run the development server:
+  <h1 align="center">Nested Path Assembler</h1>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+  <p align="center">
+    <img src="https://img.shields.io/static/v1?label=Lexter&message=AI&color=22C55E&labelColor=000000" alt="NLW AI" />
+  </p>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<details open>
+  <summary>Sumário</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">Sobre o Projeto</a>
+    </li>
+    <li>
+      <a href="#getting-started">Rodar Projeto</a>
+    </li>
+    <li><a href="#api">Documentação da API</a></li>
+    <li><a href="#contact">Contato</a></li>
+  </ol>
+</details>
+
+
+
+<!-- ABOUT THE PROJECT -->
+> ## Sobre o Projeto
+
+Desafio proposto pela Lexter.ai, para desenvolver um algoritmo para receber um Array de Objetos no formato:
+```ts
+type Input = {
+    entryId: number
+    path: string[]
+}
+```
+E retornar a montagem de caminhos do `path` ordenados pelo `entryId` no formato:
+```ts
+type Output = {
+    entryId: number;
+    fullPath: string;
+    currentPath: string;
+    children: Output[];
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Para isso foi feito um site usando Next.js e tailwind.css:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+![Preview](docs/preview.png)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+<!-- GETTING STARTED -->
+> ## Rodar Projeto
 
-## Deploy on Vercel
+Para rodar o site localmente, segue os seguintes comandos:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```sh
+npm install
+npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+E para rodar os testes unitários:
+
+```sh
+npm run test
+```
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- API -->
+> ## Documentação da API
+
+### Endpoint
+
+- URL: `/api/nested-paths`
+- Method: `POST`
+
+### Request
+
+- Content-Type: `application/json`
+
+#### Request Body
+
+```json
+[
+  {
+    "entryId": "1",
+    "path": [
+      "root1"
+    ]
+  },
+   {
+    "entryId": "6",
+    "path": [
+      "root1",
+      "path1"
+    ]
+  }
+]
+```
+
+### Responses
+
+#### Status 200
+```json
+{
+	"output": [
+		{
+			"entryId": 1,
+			"fullPath": "root1",
+			"currentPath": "root1",
+			"children": [
+				{
+					"entryId": 6,
+					"fullPath": "root1/path1",
+					"currentPath": "path1",
+					"children": []
+				}
+			]
+		}
+	]
+}
+```
+#### Status 400
+```json
+{
+	"message": "Missing root path: root1"
+}
+```
+
+```json
+{
+	"message": "Invalid JSON"
+}
+```
+
+#### Status 500
+```json
+{
+	"message": "Internal server error"
+}
+```
+
+#### 
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+<!-- CONTACT -->
+> ## Contato
+
+[![Gmail Badge](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](https://mail.google.com/mail/?view=cm&fs=1&to=renan.backend.engineer@gmail.com&su=Contact)
+
+
+[![Linkedin Badge](https://img.shields.io/badge/-LinkedIn-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/dev-renan)](https://www.linkedin.com/in/dev-renan)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
