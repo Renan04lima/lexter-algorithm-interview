@@ -49,6 +49,7 @@ type Output = {
 ```
 
 Para isso foi feito um site usando Next.js e tailwind.css:
+https://lexter-algorithm-interview-a1xgozsd5-renan04lima.vercel.app/
 
 ![Preview](docs/preview.png)
 
@@ -112,21 +113,21 @@ npm run test
 #### Status 200
 ```json
 {
-	"output": [
-		{
-			"entryId": 1,
-			"fullPath": "root1",
-			"currentPath": "root1",
-			"children": [
-				{
-					"entryId": 6,
-					"fullPath": "root1/path1",
-					"currentPath": "path1",
-					"children": []
-				}
-			]
-		}
-	]
+  "output": [
+    {
+      "entryId": 1,
+      "fullPath": "root1",
+      "currentPath": "root1",
+      "children": [
+        {
+          "entryId": 6,
+          "fullPath": "root1/path1",
+          "currentPath": "path1",
+          "children": []
+        }
+      ]
+    }
+  ]
 }
 ```
 #### Status 400
