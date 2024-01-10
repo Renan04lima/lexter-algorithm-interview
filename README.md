@@ -136,20 +136,26 @@ npm run test
 #### Status 400
 ```json
 {
-  "message": "Missing root path: root1"
+  "message": "Precisa ser um array de objetos com os campos entryId e path."
 }
 ```
 
 ```json
 {
-  "message": "Invalid JSON"
+  "message": "Faltou a raiz do caminho: root1."
+}
+```
+
+```json
+{
+  "message": "JSON no formato inválido."
 }
 ```
 
 #### Status 500
 ```json
 {
-  "message": "Internal server error"
+  "message": "Error interno do servidor."
 }
 ```
 
