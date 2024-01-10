@@ -27,8 +27,9 @@ export default function Home() {
     setLoading(true)
     try {
       if (!isValidJson(input)) {
-        throw new Error('Invalid JSON')
+        throw new Error('JSON no formato inválido.')
       }
+
       const response = await fetch('/api/nested-paths', {
         method: 'POST',
         headers: {
@@ -36,8 +37,12 @@ export default function Home() {
         },
         body: input
       })
-      const { output: outputResponse } = await response.json()
-      setOutput(JSON.stringify(outputResponse, null, 2))
+      const responseJSON = await response.json()
+      if (!response.ok) {
+        throw new Error(responseJSON.message);
+      }
+
+      setOutput(JSON.stringify(responseJSON.output, null, 2))
     } catch (error) {
       toast.error((error as Error)?.message ?? 'Erro interno')
     } finally {
